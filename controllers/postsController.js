@@ -6,20 +6,17 @@ const connection=require("../db/confDb")
 
 //index
 function index(req, res) {
-    const {tags, title} = req.query
-    let filteredPosts = [...postsData];
-    if(title){
-        filteredPosts = postsData.filter ((post)=> post.title.toLowerCase() === title.toLowerCase());
-
-    }
-    if(tags){
-        filteredPosts= postsData.filter((post)=> post.tags.includes(tags));
-    }
- 
-    
+    const sql= 'SELECT * FROM posts'
+    connection.query(sql,(err, results)=>{
+        if (err)return res.status(500).json ({
+            error:'Database query failed'
+            
+        })
+        res.json(results);
+        console.log(results);
+    })
 
 
-    res.json(filteredPosts);
     }
 //show
 function show (req,res){
