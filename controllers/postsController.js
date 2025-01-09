@@ -1,6 +1,6 @@
+const connection=require("../db/confDb")
 
-// importo file Array posts
-const postsData = require("../data/posts")
+
 
 
 
