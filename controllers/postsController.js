@@ -25,7 +25,7 @@ function show (req,res){
  
 const id = parseInt(req.params.id);
  const sql ="SELECT * FROM `posts` WHERE `id` = ? ";
- connection.query(sql,(err, results)=>{
+ connection.query(sql,[id],(err, results)=>{
      if(err){
         console.log(err);
         return res.tatus(500).json({
@@ -122,17 +122,10 @@ function modify (req,res){
 
 function destroy(req,res){
    const id = parseInt(req.params.id);
-   const post = postsData.find(post=> post.id === id);
-   if(!post){
-    return res.status(404).json({
-        error: "not found...you can't delete!!"
-    });
-   } 
-   const postIndex= postsData.indexOf(post);;
-   postsData.splice(postIndex, 1);
-   res.send(postsData);
-   console.log(postsData);
-   
+   const sql= "DELETE FROM `posts` WHERE `id`=? "
+   connection.query(sql,[id],(err, results)=>{
+
+   })
 
 }
 module.exports ={index, show, create, modify, update, destroy};
