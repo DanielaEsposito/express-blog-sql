@@ -13,7 +13,7 @@ function index(req, res) {
             
         })
         res.json(results);
-        console.log(results);
+        console.log(res);
     })
 
 
@@ -21,21 +21,24 @@ function index(req, res) {
 //show
 function show (req,res){
     
- //pippo.get();
  
-  const id = parseInt(req.params.id);
-  const post= postsData.find((post)=> post.id === id);
-   // errore di prova
-   //const post = Data.find(post=> post.title === title);
-   if(!post){
-    const err = new Error("id post not found");
-    err.code = 404;
-    throw err;
-    }
-//console.log(post);
+ 
+const id = parseInt(req.params.id);
+ const sql ="SELECT * FROM `posts` WHERE `id` = ? ";
+ connection.query(sql,(err, results)=>{
+     if(err){
+        console.log(err);
+        return res.tatus(500).json({
+        error: "Database queri failed"})  ;     
+     }
+     if(results.lenght === 0){
+        return res.status(404).json({error: "post not found"});
+     }
+
+     res.json(results[0]);
+ })
 ;
 
-res.json(post);
 
 
 
