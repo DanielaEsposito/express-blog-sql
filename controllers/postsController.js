@@ -123,8 +123,13 @@ function modify (req,res){
 function destroy(req,res){
    const id = parseInt(req.params.id);
    const sql= "DELETE FROM `posts` WHERE `id`=? "
-   connection.query(sql,[id],(err, results)=>{
-
+   connection.query(sql,[id],(err)=>{
+    if(err){
+        console.log(err);
+        return res.tatus(500).json({
+        error: "Database queri failed"})  ;     
+     };
+     res.status(204)
    })
 
 }
