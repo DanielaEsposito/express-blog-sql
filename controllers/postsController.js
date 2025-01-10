@@ -24,8 +24,8 @@ function show (req,res){
  
  
 const id = parseInt(req.params.id);
- const sql ="SELECT * FROM `posts` WHERE `id` = ? ";
- connection.query(sql,[id],(err, results)=>{
+ const sqlPosts ="SELECT * FROM `posts` WHERE `id` = ? ";
+ connection.query(sqlPosts,[id],(err, results)=>{
      if(err){
         console.log(err);
         return res.tatus(500).json({
@@ -35,9 +35,23 @@ const id = parseInt(req.params.id);
         return res.status(404).json({error: "post not found"});
      }
 
-     res.json(results[0]);
- })
-;
+     
+    })
+    let post=results[0];
+    const sqlTags = `
+    SELECT tags.*
+    FROM tags
+    INNER JOIN post_tag
+    ON post_tag.tags_id =tags.id
+    WHERE post.id = ?`
+    connection.query(sqlTags,[id],(err, results)=>{
+        if(err)return res.status(500).json ({
+            error:'Database query failed'  
+        })
+        post.tags=results;
+        res.json(post);
+    })
+    ;
 
 
 
